@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/register</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="CSS/loading-screen.css">
+    <link rel="stylesheet" href="CSS/notification.css">
+    <link rel="stylesheet" href="CSS/index.css">
+</head>
+
+<body>
+    <div class="loading-screen">
+        <div class="loading-screen-image"><img src="assets/images/logo.png" alt=""></div>
+        <div class="loader-animation">
+            <div class="loader-one"></div>
+            <div class="loader-two"></div>
+            <div class="loader-three"></div>
+        </div>
+    </div>
+    <main>
+        <div class="register-form">
+            <div class="logo">
+                <img src="assets/images/logo.png" alt="">
+            </div>
+            <h1>Login</h3>
+                <div id="notification">
+                    <span id="notification-text"></span>
+                    <span class="material-icons close-button">close</span>
+                </div>
+                <div class="form-data">
+                    <input type="email" id="email" placeholder="Email">
+                    <input type="password" id="password" placeholder="Password">
+                    <button id="submit-login">Login</button>
+                </div>
+                <span>Don't have an account?<a href="/index.html"> Register</a></span>
+        </div>
+    </main>
+    <script src="JS/login.js"></script>
+</body>
+</html>

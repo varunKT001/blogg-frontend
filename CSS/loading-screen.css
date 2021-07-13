@@ -1,0 +1,37 @@
+.loading-screen{
+    position: absolute;
+    inset: 0;
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: whitesmoke;
+}
+
+.loader-one, .loader-two, .loader-three{
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 2px solid orange;
+}
+
+.loader-one{
+    animation: loader 500ms ease-in infinite;
+}
+.loader-two{
+    animation: loader 500ms 100ms ease-in infinite;
+}
+.loader-three{
+    animation: loader 500ms 200ms ease-in infinite;
+}
+
+@keyframes loader{
+    0%{
+        background: transparent;
+    }
+    100%{
+        background: red;
+    }
+}
