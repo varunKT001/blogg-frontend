@@ -32,6 +32,18 @@ function closePopup(){
     notificationText.innerText = ''
 }
 
+function validate(user) {
+  if (!user.email || !user.password) {
+    return {
+      val: false,  
+      message: "Enter all the required fields",
+    };
+  }
+  return {
+      val: true
+  };
+}
+
 async function verifySessionStatus(token){
     let response = await fetch(`${url}/auth/verifyToken`, {
         method: 'GET',
@@ -87,9 +99,15 @@ submitLoginButton.addEventListener('click', (event)=>{
         email,
         password
     }
-    console.log(user)
-    user = JSON.stringify(user)
-    login(user)
+    let success = validate(user)
+    if(success.val){
+        console.log(user);
+        user = JSON.stringify(user);
+        login(user);
+    }
+    else{
+        showPopup(success.message, false)
+    }
 })
 
 notificationClose.addEventListener('click', closePopup)
