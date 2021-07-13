@@ -87,14 +87,6 @@ async function login(user){
     }
 }
 
-if (localStorage.getItem("token")) {
-    const token = localStorage.getItem("token");
-    let status = verifySessionStatus(token);
-    if (status) {
-        location.replace(`${siteURL}/views/homepage/homepage.html`)
-    }
-}
-
 window.addEventListener('load', ()=>{
     if(localStorage.getItem('success-message')){
         showPopup(localStorage.getItem('success-message'), true)
