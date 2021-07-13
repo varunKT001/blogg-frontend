@@ -1,4 +1,5 @@
-const url = 'http://localhost:5000'
+const serverURL = 'http://localhost:5000'
+const siteURL = 'http://localhost:5500'
 
 let submitLoginButton = document.getElementById('submit-login')
 let notification = document.getElementById('notification')
@@ -44,23 +45,24 @@ function validate(user) {
   };
 }
 
-async function verifySessionStatus(token){
-    let response = await fetch(`${url}/auth/verifyToken`, {
-        method: 'GET',
+async function verifySessionStatus(token) {
+    let response = await fetch(`${serverURL}/auth/verifyToken`, {
+        method: "GET",
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer' + ' ' + token
-        }
-        
-    })
-    response = await response.json()
-    if (response.message = 'verified'){
-        location.href = '/views/homepage/homepage.html'
+            "Content-Type": "application/json",
+            Authorization: "Bearer" + " " + token,
+        },
+    });
+    response = await response.json();
+    if ((response.message = "verified")) {
+        return true;
+    } else {
+        return false;
     }
 }
 
 async function login(user){
-    let response = await fetch(`${url}/auth/login`, {
+    let response = await fetch(`${serverURL}/auth/login`, {
         method: 'POST',
         body: user,
         headers: {
@@ -85,11 +87,27 @@ async function login(user){
     }
 }
 
+if (localStorage.getItem("token")) {
+    const token = localStorage.getItem("token");
+    let status = verifySessionStatus(token);
+    if (status) {
+        location.replace(`${siteURL}/views/homepage/homepage.html`)
+    }
+}
+
 window.addEventListener('load', ()=>{
     if(localStorage.getItem('success-message')){
         showPopup(localStorage.getItem('success-message'), true)
     }
-    localStorage.clear()
+    localStorage.removeItem('success-message')
+
+    if (localStorage.getItem("token")) {
+        const token = localStorage.getItem("token");
+        let status = verifySessionStatus(token);
+        if (status) {
+            location.replace(`${siteURL}/views/homepage/homepage.html`)
+        }
+    }
 })
 
 submitLoginButton.addEventListener('click', (event)=>{

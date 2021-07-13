@@ -1,4 +1,5 @@
-const url = "http://localhost:5000";
+const serverURL = "http://localhost:5000";
+const siteURL = "http://localhost:5500";
 
 let submitRegisterButton = document.getElementById("submit-register");
 let notification = document.getElementById("notification");
@@ -56,7 +57,7 @@ function validate(user) {
 }
 
 async function verifySessionStatus(token) {
-    let response = await fetch(`${url}/auth/verifyToken`, {
+    let response = await fetch(`${serverURL}/auth/verifyToken`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -65,35 +66,14 @@ async function verifySessionStatus(token) {
     });
     response = await response.json();
     if ((response.message = "verified")) {
-        location.href = "/views/homepage/homepage.html";
-    }
-}
-
-async function login(user) {
-    let response = await fetch(`${url}/auth/login`, {
-        method: "POST",
-        body: user,
-        headers: {
-            "Content-Type": "application/json",
-        },
-    });
-    response = await response.json();
-
-    if (response.message == "internal server error") {
-        showPopup(response.message + "!, " + "Try again", false);
-    } else if (response.message == "user not found") {
-        showPopup(response.message, false);
-    } else if (response.message == "password incorrect") {
-        showPopup(response.message, false);
-    } else if (response.message == "user logged in successfully") {
-        localStorage.setItem("token", response.token);
-        initializeLoader();
-        location.href = "/views/homepage/homepage.html";
+        return true;
+    } else {
+        return false;
     }
 }
 
 async function register(user) {
-    let response = await fetch(`${url}/auth/register`, {
+    let response = await fetch(`${serverURL}/auth/register`, {
         method: "POST",
         body: user,
         headers: {
@@ -117,6 +97,16 @@ async function register(user) {
         location.href = "/login.html";
     }
 }
+
+window.addEventListener('load', () => {
+    if (localStorage.getItem("token")) {
+        const token = localStorage.getItem("token");
+        let status = verifySessionStatus(token);
+        if (status) {
+            location.replace(`${siteURL}/views/homepage/homepage.html`)
+        }
+    }
+})
 
 submitRegisterButton.addEventListener("click", (event) => {
     let name = document.getElementById("name").value;
