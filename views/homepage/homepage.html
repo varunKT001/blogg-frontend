@@ -5,10 +5,42 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="homepage.css">
 </head>
 <body>
-    hello
-    <button>logout</button>
+    <nav>
+        <button onclick="showHome()" class="home-button"><span class="material-icons md-36 orange600">home</span></button>
+        <button onclick="showAddBlog()" class="add-button"><span class="material-icons-outlined md-36 orange600">add_box</span></button>
+        <button onclick="logout()" class="logout-button"><span class="material-icons md-36 orange600">logout</span></button>
+    </nav>
+    <div class="home-container">
+        <h2>blogg</h2>
+        <div class="blogs-container">
+            <div class="blog-card">
+                <div class="parent-container">
+                <div class="parent">
+                    <div class="div1"><span class="material-icons md-48 orange600">account_circle</span></div>
+                    <div class="div2">By: ${blog.author}</div>
+                    <div class="div3">Written on: ${blog.date}</div>
+                </div>
+                </div>
+                <div class="blog-tittle"><h3>${blog.tittle}</h3></div>
+                <div class="blog-content">${blog.content}</div>
+            </div>
+        </div>
+    </div>
+    <div class="add-container">
+        <h2>Add blogg</h2>
+        <div class="blogs-container">
+            <div class="add-blog">
+                <input class="tittle" type="tittle" placeholder="Tittle" required>
+                <textarea class="content" name="content" id="" cols="30" rows="10" placeholder="Write Your Blog in Markdown"></textarea>
+                <button class="submit-button" onclick="submitBlog()">ADD</button>
+            </div>
+        </div>
+    </div>
     <script src="homepage.js"></script>
 </body>
 </html>
