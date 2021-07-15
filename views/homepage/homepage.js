@@ -1,5 +1,5 @@
-const serverURL = 'http://localhost:5000'
-const siteURL = 'http://localhost:5500'
+const serverURL = 'https://blogg-server.herokuapp.com/'
+const siteURL = 'https://letsblogg.netlify.app/'
 
 let notification = document.getElementById("notification");
 let notificationText = document.getElementById("notification-text");
