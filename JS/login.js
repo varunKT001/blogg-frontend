@@ -1,6 +1,3 @@
-const serverURL = 'http://localhost:5000'
-const siteURL = 'http://localhost:5500'
-
 let submitLoginButton = document.getElementById('submit-login')
 let notification = document.getElementById('notification')
 let notificationText = document.getElementById('notification-text')
@@ -92,14 +89,6 @@ window.addEventListener('load', ()=>{
         showPopup(localStorage.getItem('success-message'), true)
     }
     localStorage.removeItem('success-message')
-
-    if (localStorage.getItem("token")) {
-        const token = localStorage.getItem("token");
-        let status = verifySessionStatus(token);
-        if (status) {
-            location.replace(`${siteURL}/views/homepage/homepage.html`)
-        }
-    }
 })
 
 submitLoginButton.addEventListener('click', (event)=>{

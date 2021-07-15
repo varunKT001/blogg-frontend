@@ -1,6 +1,3 @@
-const serverURL = "http://localhost:5000";
-const siteURL = "http://localhost:5500";
-
 let submitRegisterButton = document.getElementById("submit-register");
 let notification = document.getElementById("notification");
 let notificationText = document.getElementById("notification-text");
@@ -97,16 +94,6 @@ async function register(user) {
         location.href = "/login.html";
     }
 }
-
-window.addEventListener('load', () => {
-    if (localStorage.getItem("token")) {
-        const token = localStorage.getItem("token");
-        let status = verifySessionStatus(token);
-        if (status) {
-            location.replace(`${siteURL}/views/homepage/homepage.html`)
-        }
-    }
-})
 
 submitRegisterButton.addEventListener("click", (event) => {
     let name = document.getElementById("name").value;

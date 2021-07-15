@@ -8,39 +8,60 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link rel="stylesheet" href="homepage.css">
+    <link rel="stylesheet" href="notification.css">
+    <link rel="stylesheet" href="loading-screen.css">
 </head>
 <body>
+    <div class="loading-screen">
+        <div class="loading-screen-image"><img src="../../assets/images/logo.png" alt=""></div>
+        <div class="loader-animation">
+            <div class="loader-one"></div>
+            <div class="loader-two"></div>
+            <div class="loader-three"></div>
+        </div>
+    </div>
     <nav>
-        <button onclick="showHome()" class="home-button"><span class="material-icons md-36 orange600">home</span></button>
-        <button onclick="showAddBlog()" class="add-button"><span class="material-icons-outlined md-36 orange600">add_box</span></button>
+        <img src="../../assets/images/logo.png" alt="blogg">
+        <div class="buttons-container">
+            <button onclick="showHome()" class="home-button"><span class="material-icons md-36 orange600">home</span></button>
+            <button onclick="showAddBlog()" class="add-button"><span class="material-icons-outlined md-36 orange600">add_box</span></button>
+            <button onclick="showProfile()" class="profile-button"><span class="material-icons md-36 orange600">face</span></button>
+        </div>
         <button onclick="logout()" class="logout-button"><span class="material-icons md-36 orange600">logout</span></button>
     </nav>
+
+    <!-- BLOGS DISPLAY SECTION (HOME) -->
+
     <div class="home-container">
         <h2>blogg</h2>
         <div class="blogs-container">
-            <div class="blog-card">
-                <div class="parent-container">
-                <div class="parent">
-                    <div class="div1"><span class="material-icons md-48 orange600">account_circle</span></div>
-                    <div class="div2">By: ${blog.author}</div>
-                    <div class="div3">Written on: ${blog.date}</div>
-                </div>
-                </div>
-                <div class="blog-tittle"><h3>${blog.tittle}</h3></div>
-                <div class="blog-content">${blog.content}</div>
-            </div>
+
         </div>
     </div>
+
+    <!-- ADD BLOG SECTION -->
+
     <div class="add-container">
         <h2>Add blogg</h2>
         <div class="blogs-container">
             <div class="add-blog">
+                <div id="notification">
+                    <span id="notification-text"></span>
+                    <span class="material-icons close-button" onclick="closePopup()">close</span>
+                </div>
                 <input class="tittle" type="tittle" placeholder="Tittle" required>
                 <textarea class="content" name="content" id="" cols="30" rows="10" placeholder="Write Your Blog in Markdown"></textarea>
                 <button class="submit-button" onclick="submitBlog()">ADD</button>
             </div>
         </div>
     </div>
+
+    <!-- PROFILE DISPLAY SECTION -->
+
+    <div class="profile-container">
+
+    </div>
+
     <script src="homepage.js"></script>
 </body>
 </html>
