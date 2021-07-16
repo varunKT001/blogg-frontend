@@ -85,3 +85,15 @@ main{
     background-color: orange;
     transition: 200ms ease-in;
 }
+
+@media only screen and (max-width: 414px){
+    .register-form{
+        width: 75%;
+    }
+}
+
+@media only screen and (max-width: 768px){
+    .register-form{
+        width: 40%;
+    }
+}
