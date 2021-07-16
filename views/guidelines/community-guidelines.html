@@ -65,6 +65,7 @@
             display: flex;
             justify-content: center;
         }
+
         .tick div:nth-child(2) {
             display: flex;
             justify-content: center;
@@ -75,6 +76,17 @@
             text-decoration: none;
             font-weight: bolder;
         }
+
+        @media only screen and (max-width: 770px) {
+            .message-box {
+                width: 65%;
+            }
+        }
+        @media only screen and (max-width: 420px) {
+            .message-box {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 
@@ -84,28 +96,41 @@
             <div class="tick">
                 <div><span class="material-icons md-64 orange600">groups</span></div>
                 <div><strong>COMMUNITY GUIDELINES</strong></div>
-                <hr><hr>
+                <hr>
+                <hr>
                 <div>
                     <p><strong>We ask that you: </strong></p>
                     <ul>
-                        <li>Don’t post anything that contains any material that is abusive, vulgar, obscene, hateful, fraudulent, unlawful,
-                        threatening, or harrassing towards any person whether a user on this blog or not.</li>
+                        <li>Don’t post anything that contains any material that is abusive, vulgar, obscene, hateful,
+                            fraudulent, unlawful,
+                            threatening, or harrassing towards any person whether a user on this blog or not.</li>
                         <li>Don’t plagiarize.</li>
                         <li>Don’t defame others.</li>
                         <li>Don’t use posts to promote products or services.</li>
-                        <li>Don’t use third-party content without permission unless you are permitted to do so by copyright law.</li>
-                        <li>Don’t post any medical advice on our blogs, or accept any medical advice from other users.</li>
-                        <li>Don’t post any material which may be discriminatory or cause offence on the grounds of an individual’s sex, race,
-                        religion or belief, ethnic or national origin, sexual orientation, age, marital status, disability or working status.</li>
-                        <li>Don’t upload, post, transmit, or make available, any material that contains viruses or any other computer code, programs
-                        or files designed to destroy, interrupt, or limit the functionality of any computer software or hardware or
-                        telecommunications equipment.</li>
+                        <li>Don’t use third-party content without permission unless you are permitted to do so by
+                            copyright law.</li>
+                        <li>Don’t post any medical advice on our blogs, or accept any medical advice from other users.
+                        </li>
+                        <li>Don’t post any material which may be discriminatory or cause offence on the grounds of an
+                            individual’s sex, race,
+                            religion or belief, ethnic or national origin, sexual orientation, age, marital status,
+                            disability or working status.</li>
+                        <li>Don’t upload, post, transmit, or make available, any material that contains viruses or any
+                            other computer code, programs
+                            or files designed to destroy, interrupt, or limit the functionality of any computer software
+                            or hardware or
+                            telecommunications equipment.</li>
                     </ul>
-                    <p>Blogg has the right to remove the post or take any actions against the post author (which may result in temporary or permanent
-                    bans from blogg) found in violation of its guidelines.</p>
-                    <p>You can complain about any post(s) that break the guidelines by emailing <a href="#">keplons@outlook.com</a>. I will respond to or act on all complaints within 48 hours.</p>
+                    <p>Blogg has the right to remove the post or take any actions against the post author (which may
+                        result in temporary or permanent
+                        bans from blogg) found in violation of its guidelines.</p>
+                    <p>You can complain about any post(s) that break the guidelines by emailing <a
+                            href="#">keplons@outlook.com</a>. I will respond to or act on all complaints within 48
+                        hours.</p>
                 </div>
-                <div><a href="https://letsblogg.netlify.app/views/homepage/homepage.html"><- BACK TO HOME</a></div>
+                <div><a href="https://letsblogg.netlify.app/views/homepage/homepage.html">
+                        <- BACK TO HOME</a>
+                </div>
             </div>
         </div>
     </div>
