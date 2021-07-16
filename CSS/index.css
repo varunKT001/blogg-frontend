@@ -86,14 +86,14 @@ main{
     transition: 200ms ease-in;
 }
 
-@media only screen and (max-width: 414px){
+@media only screen and (max-width: 770px){
     .register-form{
-        width: 75%;
+        width: 40%;
     }
 }
 
-@media only screen and (max-width: 768px){
+@media only screen and (max-width: 420px){
     .register-form{
-        width: 40%;
+        width: 75%;
     }
 }

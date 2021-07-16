@@ -53,9 +53,9 @@
     }
 }
 
-@media only screen and (max-width: 414px){
+@media only screen and (max-width: 420px){
     .loader-one, .loader-two, .loader-three{
-        width: 7px;
-        height: 7px;
+        width: 5px;
+        height: 5px;
     }
 }
