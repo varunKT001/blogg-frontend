@@ -1,5 +1,7 @@
 const serverURL = 'https://blogg-server.herokuapp.com'
 const siteURL = 'https://letsblogg.netlify.app'
+// const serverURL = 'http://localhost:5000'
+// const siteURL = 'http://localhost:5500'
 
 let notification = document.getElementById("notification");
 let notificationText = document.getElementById("notification-text");
@@ -131,6 +133,7 @@ function renderBlogs(blogs) {
   let blogsContainer = document.querySelector('.blogs-container')
   let blogCardHTML = ``
   if(blogs.length != 0){
+    let i=0
     blogs.forEach(blog => {
       blogCardHTML += `<div class="blog-card">
                         <div class="parent-container">
@@ -141,8 +144,12 @@ function renderBlogs(blogs) {
                         </div>
                         </div>
                         <div class="blog-tittle"><h3>${blog.tittle}</h3></div>
+                        <div class="blog-description"><em>${blog.description}</em></div>
                         <div class="blog-content">${blog.content}</div>
+                        <button class = "read-more" onclick="expandContent(${i})">READ MORE</button>
+                        <button class = "read-less" onclick="hideContent(${i})">READ LESS</button>
                       </div>`
+                      i++
     });
   }
   else{
@@ -177,7 +184,8 @@ function renderProfile(user, userBlogs){
                         </div>
                         </div>
                         <div class="blog-tittle"><h3>${blog.tittle}</h3></div>
-                        <div class="blog-content">${blog.content}</div>
+                        <div class="blog-description"><em>${blog.description}</em></div>
+                        <div class="blog-content-profile">${blog.content}</div>
                         <button class="delete-blog-button" onclick="deleteUserBlog(${blog.blogid})">DELETE BLOG</button>
                       </div>`
     });
@@ -263,11 +271,31 @@ function showProfile() {
   profileButton.style["border-bottom"] = '5px solid orange'
 }
 
+function hideContent(i){
+  let content = document.getElementsByClassName('blog-content')[i]
+  let readmoreButton = document.getElementsByClassName('read-more')[i]
+  let readlessButton = document.getElementsByClassName('read-less')[i]
+  console.log(content, i)
+  readmoreButton.style.display = 'inline-block'
+  readlessButton.style.display = 'none'
+  content.style.display = 'none'
+}
+function expandContent(i){
+  let content = document.getElementsByClassName('blog-content')[i]
+  let readmoreButton = document.getElementsByClassName('read-more')[i]
+  let readlessButton = document.getElementsByClassName('read-less')[i]
+  console.log(content, i)
+  readmoreButton.style.display = 'none'
+  readlessButton.style.display = 'inline-block'
+  content.style.display = 'block'
+}
+
+
 function validate(blog){
-  if (!blog.tittle || !blog.content){
+  if (!blog.tittle || !blog.content || !blog.description){
     return {
       val: false,
-      message: 'Enter all the required fields!'
+      message: 'Enter the required fields!'
     }
   }
   else{
@@ -289,6 +317,7 @@ async function submitBlog() {
   let token = localStorage.getItem('token')
   let tittle = document.querySelector('.tittle').value
   let content = document.querySelector('.content').value
+  let description = document.querySelector('.description').value
   let { user } = await verifySessionStatus(token)
 
   if (!checkUserEmailVerified(user)) {
@@ -306,7 +335,8 @@ async function submitBlog() {
     tittle: tittle,
     author: user.username,
     date: today,
-    content: content
+    content: content,
+    description: description
   }
 
   let success = validate(blog)
@@ -335,6 +365,7 @@ async function submitBlog() {
 }
 
 async function logout() {
+  initializeLoader()
   localStorage.removeItem('token')
   location.replace(`${siteURL}/login.html`)
 }

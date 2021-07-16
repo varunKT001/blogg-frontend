@@ -13,6 +13,8 @@
     <script>
             const serverURL = 'https://blogg-server.herokuapp.com'
             const siteURL = 'https://letsblogg.netlify.app'
+            // const serverURL = 'http://localhost:5000'
+            // const siteURL = 'http://localhost:5500'
             if (localStorage.getItem("token")) {
                 const token = localStorage.getItem("token");
                 let status = verifySessionStatus(token);

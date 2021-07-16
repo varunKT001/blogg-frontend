@@ -59,6 +59,7 @@ async function verifySessionStatus(token) {
 }
 
 async function login(user){
+    initializeLoader()
     let response = await fetch(`${serverURL}/auth/login`, {
         method: 'POST',
         body: user,
@@ -69,17 +70,19 @@ async function login(user){
     response = await response.json()
 
     if(response.message == 'internal server error'){
+        stopLoader()
         showPopup(response.message + '!, ' + 'Try again', false)
     }
     else if(response.message == 'user not found'){
+        stopLoader()
         showPopup(response.message, false)
     }
     else if(response.message == 'password incorrect'){
+        stopLoader()
         showPopup(response.message, false)
     }
     else if(response.message == 'user logged in successfully'){
         localStorage.setItem('token', response.token)
-        initializeLoader()
         location.href = '/views/homepage/homepage.html'
     }
 }

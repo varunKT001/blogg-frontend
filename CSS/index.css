@@ -36,6 +36,11 @@ main{
 
 .register-form > .logo > img{
     width: 50%;
+    border-radius: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    mix-blend-mode: darken;
+    transform: translateY(-1.25rem);
 }
 
 .register-form > span{

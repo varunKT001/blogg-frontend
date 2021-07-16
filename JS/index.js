@@ -70,6 +70,7 @@ async function verifySessionStatus(token) {
 }
 
 async function register(user) {
+    initializeLoader()
     let response = await fetch(`${serverURL}/auth/register`, {
         method: "POST",
         body: user,
@@ -80,17 +81,19 @@ async function register(user) {
     response = await response.json();
 
     if (response.message == "internal server error") {
+        stopLoader()
         showPopup(response.message + "!, " + "Try again");
     } else if (response.message == "user already registered") {
+        stopLoader()
         showPopup(response.message);
     } else if (response.message == "username already exist") {
+        stopLoader()
         showPopup(response.message);
     } else if (response.message == "user successfully registered") {
         localStorage.setItem(
             "success-message",
             response.message + ", " + "Login to continue"
         );
-        initializeLoader();
         location.href = "/login.html";
     }
 }

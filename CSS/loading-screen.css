@@ -1,5 +1,6 @@
 .loading-screen{
-    position: absolute;
+    /* position: absolute; */
+    position: fixed;
     inset: 0;
     z-index: 1000;
     display: none;
@@ -7,6 +8,22 @@
     align-items: center;
     justify-content: center;
     background: whitesmoke;
+    overflow: hidden;
+}
+
+.loading-screen-image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-screen-image > img {
+    width: 50%;
+    border-radius: 10px;
+}
+
+.loader-animation{
+    transform: translateY(-1.5rem);
 }
 
 .loader-one, .loader-two, .loader-three{

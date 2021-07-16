@@ -6,7 +6,8 @@ body{
     margin: 0px;
     padding: 0px;
     font-family: 'Poppins', sans-serif;;
-    background: #eeeeee;
+    background: rgba(255,165,0,0.5);
+    overflow-x: hidden;
 }
 
 .material-icons.md-18 { font-size: 18px; }
@@ -30,7 +31,7 @@ nav{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #ffffff;
+    background: black;
     box-shadow:0px 1px 10px #d6d6d6;
 }
 
@@ -86,7 +87,6 @@ nav > .logo > img{
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #eeeeee;
 }
 
 .blogs-container{
@@ -135,6 +135,38 @@ nav > .logo > img{
     padding: 1rem;
     background: white;
     border-radius: 5px;
+    overflow-wrap: break-word;
+    background: rgba( 255, 255, 255, 0.25 );
+    backdrop-filter: blur( 5.0px );
+    -webkit-backdrop-filter: blur( 5.0px );
+    border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.blog-content{
+    display: none;
+}
+
+.read-less{
+    display: none;
+}
+
+.read-more{
+    background: orange;
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+.read-more:hover{
+    color: white;
+}
+.read-less{
+    background: orange;
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+.read-less:hover{
+    color: white;
 }
 
 .no-blog-container{
@@ -161,7 +193,6 @@ nav > .logo > img{
     display: none;
     flex-direction: column;
     align-items: center;
-    background: #eeeeee;
 }
 
 .add-blog{
@@ -172,24 +203,34 @@ nav > .logo > img{
     flex-direction: column;
     background: white;
     border-radius: 5px;
+    background: rgba( 255, 255, 255, 0.25 );
+    backdrop-filter: blur( 5.0px );
+    -webkit-backdrop-filter: blur( 5.0px );
+    border: 1px solid rgba(0, 0, 0, 0.25);
 }
 
 .add-blog > input, textarea{
     padding: 10px;
     margin: 5px;
     font-family: poppins, sans-serif;
-    border: 1px solid orange;
+    background: transparent;
+    border: 1px solid black;
     border-radius: 5px;
 }
 
 .tittle:focus{
     outline: none;
-    border: 2px solid orange;
+    border: 2px solid black;
 }
 
 .content:focus{
     outline: none;
-    border: 2px solid orange;
+    border: 2px solid black;
+}
+
+.description:focus{
+    outline: none;
+    border: 2px solid black;
 }
 
 .submit-button{
@@ -197,13 +238,15 @@ nav > .logo > img{
     margin: 5px;
     margin-top: 20px;
     outline: none;
-    border: 2px solid orange;
+    background: black;
+    color: white;
+    border: 1px solid white;
     border-radius: 5px;
 }
 
 .submit-button:hover{
-    border: 2px solid orangered;
-    background-color: orange;
+    border: 2px solid black;
+    background-color: green;
     transition: 200ms ease-in;
 }
 
@@ -211,7 +254,6 @@ nav > .logo > img{
     display: none;
     flex-direction: column;
     align-items: center;
-    background: #eeeeee;
 }
 
 .verify-button{
