@@ -97,7 +97,7 @@ async function sendVerificationLink(){
     stopLoader()
     console.log(response)
     showAddBlog()
-    showPopup(response.message, (response.errcode?false:true))
+    showPopup(response.message + ' (CHECK SPAM FOLDER)', (response.errcode?false:true))
   }
   else {
     location.replace(`${siteURL}/login.html`)
@@ -408,7 +408,7 @@ async function submitBlog() {
     showPopup(response.message, false)
   }
   else{
-    showPopup(response.message, true)
+    showPopup(response.message + ' (PLEASE RELOAD)', true)
   }
 }
 
