@@ -229,7 +229,6 @@ function renderProfile(user, userBlogs){
                             <div class="div2">By: ${blog.author}</div>
                             <div class="div3">Written on: ${blog.date}</div>
                             <div class="div4"><button class="like-toggle-button"><span class="material-icons red600 like-icon">favorite</span></button><span class="likes-count">${blog.likes}</span></div>
-
                         </div>
                         </div>
                         <div class="blog-tittle"><h3>${blog.tittle}</h3></div>
