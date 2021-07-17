@@ -24,6 +24,8 @@ body{
 
 .material-icons.orange600 { color: #FB8C00; }
 .material-icons-outlined.orange600 { color: #FB8C00; }
+.material-icons.red600 { color: red; }
+.material-icons-outlined.red600 { color: red; }
 
 nav{
     padding: 0px 25%;
@@ -103,7 +105,7 @@ nav > .logo > img{
 
 .parent {
     display: grid;
-    grid-template-columns: 1fr 14fr;
+    grid-template-columns: 1fr 14fr 1fr;
     grid-template-rows: 1fr 1fr;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
@@ -127,6 +129,18 @@ nav > .logo > img{
     font-size: 0.8rem;
     display: flex;
     padding: 0px 5px;
+}
+.div4 { 
+    grid-area: 1 / 5 / 3 / 6;; 
+    font-size: 0.8rem;
+    display: flex;
+    padding: 0px 5px;
+}
+
+.like-toggle-button{
+    outline: none;
+    border: none;
+    background: transparent;
 }
 
 .blog-card{

@@ -8,6 +8,7 @@ let notificationText = document.getElementById("notification-text");
 
 window.addEventListener('load', async () => {
   // CHECK AUTH
+  initializeLoader()
   if (localStorage.getItem("token")) {
     const token = localStorage.getItem("token");
     let status = await verifySessionStatus(token);
@@ -15,8 +16,9 @@ window.addEventListener('load', async () => {
       // GET BLOGS
       let blogs = await getBlogs(token)
       let userBlogs = await getUserBlogs(token, status.user)
-      renderBlogs(blogs)
+      renderBlogs(blogs, status.user)
       renderProfile(status.user, userBlogs)
+      stopLoader()
     }
     else {
       localStorage.removeItem('token')
@@ -128,19 +130,65 @@ async function getUserBlogs(token, user) {
   return blogs
 }
 
-function renderBlogs(blogs) {
+async function likeToggle(userid, blogid, i){
+  let token = localStorage.getItem('token')
+  let body = {
+    userid: userid,
+    blogid: blogid
+  }
+  body = JSON.stringify(body)
+  let response = await fetch(`${serverURL}/post/blog/like`, {
+    method: 'POST',
+    body: body,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer' + ' ' + token
+    }
+  })
+  response = await response.json()
+  if(response.message == "liked"){
+    console.log(response.message, blogid)
+    let likeButton = document.getElementsByClassName('like-icon')[i]
+    let likeCount = document.getElementsByClassName('likes-count')[i]
+    likeCount.innerText = parseInt(likeCount.innerText) + 1
+    likeButton.innerText = 'favorite'
+  }
+  else if(response.message == "undo liked"){
+    console.log(response.message, blogid)
+    let likeButton = document.getElementsByClassName('like-icon')[i]
+    let likeCount = document.getElementsByClassName('likes-count')[i]
+    likeCount.innerText = parseInt(likeCount.innerText) - 1
+    likeButton.innerText = 'favorite_border'
+  }
+  else{
+    //do nothing
+    console.log(response.message, blogid)
+  }
+}
+
+async function likedOrNot(userid, blogid){
+  let relationship = await fetch(`${serverURL}/post/blog/likedOrNot?userid=${userid}&blogid=${blogid}`)
+  relationship = await relationship.json()
+  console.log(relationship.message)
+  return relationship.message
+}
+
+async function renderBlogs(blogs, user) {
   console.log(blogs)
   let blogsContainer = document.querySelector('.blogs-container')
   let blogCardHTML = ``
   if(blogs.length != 0){
-    let i=0
-    blogs.forEach(blog => {
+    for(let i=0; i<blogs.length;i++){
+      blog = blogs[i]
+      let relationship = await likedOrNot(user.id, blog.blogid)
+      likeButton = relationship?'favorite':'favorite_border'
       blogCardHTML += `<div class="blog-card">
                         <div class="parent-container">
                         <div class="parent">
                             <div class="div1"><span class="material-icons md-48 orange600">account_circle</span></div>
                             <div class="div2">By: ${blog.author}</div>
                             <div class="div3">Written on: ${blog.date}</div>
+                            <div class="div4"><button class="like-toggle-button" onclick="likeToggle(${user.id}, ${blog.blogid}, ${i})"><span class="material-icons red600 like-icon">${likeButton}</span></button><span class="likes-count">${blog.likes}</span></div>
                         </div>
                         </div>
                         <div class="blog-tittle"><h3>${blog.tittle}</h3></div>
@@ -149,8 +197,7 @@ function renderBlogs(blogs) {
                         <button class = "read-more" onclick="expandContent(${i})">READ MORE</button>
                         <button class = "read-less" onclick="hideContent(${i})">READ LESS</button>
                       </div>`
-                      i++
-    });
+    }
   }
   else{
     blogCardHTML =`<div class="no-blog-container">
