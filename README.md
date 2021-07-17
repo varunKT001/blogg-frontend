@@ -39,21 +39,19 @@ Blogg is a platform where people with different backgrounds can share their expe
 
 ### Screenshots: 
 
-![home-pc](/assets/images/home-pc.png)
-![add-pc](/assets/images/add-pc.png)
-![profile-pc](/assets/images/profile-pc.png)
+![home-pc](/assets/images/home-pc.PNG)
+![add-pc](/assets/images/add-pc.PNG)
+![profile-pc](/assets/images/profile-pc.PNG)
 
 
 <h2>
-<img src="/assets/images/home-phone.png" width="32%">
-<img src="/assets/images/add-phone.png" width="32%">
-<img src="/assets/images/profile-phone.png" width="32%">
+<img src="/assets/images/home-phone.PNG" width="32%">
+<img src="/assets/images/add-phone.PNG" width="32%">
+<img src="/assets/images/profile-phone.PNG" width="32%">
 </h2>
 
 ### Feedback
 
 You can let me know what you think of the app by leaving a rating and feedback.
 
-<div class="form-container">
-<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeav3HxgxuyIuuZVaa-QBEuN695vNrsFRKKSTMMLJGkJMwndg/viewform?embedded=true" width="540" height="780" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-</div>
+[Share your valuable feedback](https://forms.gle/mpxBMhoQy9C2aUqF9)
