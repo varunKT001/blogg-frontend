@@ -196,6 +196,7 @@ async function renderBlogs(blogs, user) {
                         <div class="blog-content">${blog.content}</div>
                         <button class = "read-more" onclick="expandContent(${i})">READ MORE</button>
                         <button class = "read-less" onclick="hideContent(${i})">READ LESS</button>
+                        <button class = "copy-blog-link" onclick="copyBlogLinkToClipboard(${blog.blogid})">SHARE LINK</button>
                       </div>`
     }
   }
@@ -235,6 +236,7 @@ function renderProfile(user, userBlogs){
                         <div class="blog-description"><em>${blog.description}</em></div>
                         <div class="blog-content-profile">${blog.content}</div>
                         <button class="delete-blog-button" onclick="deleteUserBlog(${blog.blogid})">DELETE BLOG</button>
+                        <button class = "copy-blog-link" onclick="copyBlogLinkToClipboard(${blog.blogid})">SHARE LINK</button>
                       </div>`
     });
   }
@@ -410,6 +412,19 @@ async function submitBlog() {
   else{
     showPopup(response.message + ' (PLEASE RELOAD)', true)
   }
+}
+
+function copyBlogLinkToClipboard(blogid){
+  let currentPos = document.documentElement.scrollTop || document.body.scrollTop
+  let inputc = document.body.appendChild(document.createElement("input"));
+  inputc.value = `${siteURL}/views/blog/blog.html?blogid=${blogid}`;
+  console.log(inputc.value)
+  inputc.focus();
+  inputc.select();
+  document.execCommand('copy');
+  inputc.parentNode.removeChild(inputc);
+  alert("Blog link Copied to clipboard.");
+  window.scrollTo(0, currentPos);
 }
 
 async function logout() {
