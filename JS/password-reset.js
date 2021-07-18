@@ -42,6 +42,12 @@ function validate(user) {
             message: "Enter all the required fields",
         };
     }
+    if (user.password != user.confirmPassword) {
+        return {
+            val: false,
+            message: "Passwords don't match",
+        };
+    }
     return {
         val: true
     };
@@ -87,8 +93,10 @@ async function resetPassword(user) {
 
 submitLoginButton.addEventListener('click', (event) => {
     let password = document.getElementById('password').value
+    let confirmPassword = document.getElementById('confirm-password').value
     let user = {
-        password
+        password,
+        confirmPassword
     }
     let success = validate(user)
     if (success.val) {

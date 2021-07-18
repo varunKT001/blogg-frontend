@@ -48,6 +48,12 @@ function validate(user) {
             message: "Password must contain a number",
         };
     }
+    if (!/^(\d|\w)+$/.test(user.username)){
+        return {
+            val: false,
+            message: 'Username cannot contain spaces and special characters!'
+        }
+    }
     return {
         val: true
     };
