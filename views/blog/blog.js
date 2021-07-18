@@ -1,7 +1,7 @@
-// const serverURL = 'https://blogg-server.herokuapp.com'
-// const siteURL = 'https://letsblogg.netlify.app'
-const serverURL = 'http://localhost:5000'
-const siteURL = 'http://localhost:5500'
+const serverURL = 'https://blogg-server.herokuapp.com'
+const siteURL = 'https://letsblogg.netlify.app'
+// const serverURL = 'http://localhost:5000'
+// const siteURL = 'http://localhost:5500'
 
 window.addEventListener('load', async () => {
     let blogid = extractParams()
