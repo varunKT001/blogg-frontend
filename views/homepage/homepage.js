@@ -16,7 +16,7 @@ window.addEventListener('load', async () => {
       // GET BLOGS
       let blogs = await getBlogs(token)
       let userBlogs = await getUserBlogs(token, status.user)
-      renderBlogs(blogs, status.user)
+      await renderBlogs(blogs, status.user)
       renderProfile(status.user, userBlogs)
       stopLoader()
     }
