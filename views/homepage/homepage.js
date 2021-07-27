@@ -1,35 +1,33 @@
-const serverURL = 'https://blogg-server.herokuapp.com'
-const siteURL = 'https://letsblogg.netlify.app'
+const serverURL = "https://blogg-server.herokuapp.com";
+const siteURL = "https://letsblogg.netlify.app";
 // const serverURL = 'http://localhost:5000'
-// const siteURL = 'http://localhost:5500'
+// const siteURL = "http://localhost:5500";
 
 let notification = document.getElementById("notification");
 let notificationText = document.getElementById("notification-text");
 
-window.addEventListener('load', async () => {
+window.addEventListener("load", async () => {
   // CHECK AUTH
-  initializeLoader()
+  initializeLoader();
   if (localStorage.getItem("token")) {
     const token = localStorage.getItem("token");
     let status = await verifySessionStatus(token);
     if (status.val) {
       // GET BLOGS
-      let blogs = await getBlogs(token)
-      let userBlogs = await getUserBlogs(token, status.user)
-      await renderBlogs(blogs, status.user)
-      renderProfile(status.user, userBlogs)
-      stopLoader()
-    }
-    else {
-      localStorage.removeItem('token')
+      let blogs = await getBlogs(token);
+      let userBlogs = await getUserBlogs(token, status.user);
+      await renderBlogs(blogs, status.user);
+      renderProfile(status.user, userBlogs);
+      stopLoader();
+    } else {
+      localStorage.removeItem("token");
       location.replace(`${siteURL}/login.html`);
     }
+  } else {
+    localStorage.removeItem("token");
+    location.replace(`${siteURL}/login.html`);
   }
-  else {
-    localStorage.removeItem('token')
-    location.replace(`${siteURL}/login.html`)
-  }
-})
+});
 
 function initializeLoader() {
   document.querySelector(".loading-screen").style.display = "flex";
@@ -57,6 +55,41 @@ function closePopup() {
   notification.style.display = "none";
 }
 
+function toggleLightMode() {
+  mode = document.getElementById("mode-toggle");
+  if (mode.innerText == "light_mode") {
+    let body = document.querySelector("body");
+    let tittle = document.querySelector(".tittle");
+    let description = document.querySelector(".description");
+    let content = document.querySelector(".content");
+    let guidelines = document.getElementById("guidelines-a");
+    let guide = document.getElementById("markdown-guide-a");
+    guidelines.style.color = "orange";
+    guide.style.color = "orange";
+    tittle.style.color = "white";
+    description.style.color = "white";
+    content.style.color = "white";
+    body.style.background = "rgb(30,30,30)";
+    body.style.color = "white";
+    mode.innerText = "dark_mode";
+  } else if (mode.innerText == "dark_mode") {
+    let body = document.querySelector("body");
+    let tittle = document.querySelector(".tittle");
+    let description = document.querySelector(".description");
+    let content = document.querySelector(".content");
+    let guidelines = document.getElementById("guidelines-a");
+    let guide = document.getElementById("markdown-guide-a");
+    guidelines.style.color = "blue";
+    guide.style.color = "blue";
+    tittle.style.color = "black";
+    description.style.color = "black";
+    content.style.color = "black";
+    body.style.background = "rgba(255, 165, 0, 0.4)";
+    body.style.color = "black";
+    mode.innerText = "light_mode";
+  }
+}
+
 async function verifySessionStatus(token) {
   let response = await fetch(`${serverURL}/auth/verifyToken`, {
     method: "GET",
@@ -69,119 +102,121 @@ async function verifySessionStatus(token) {
   if (response.message == "verified") {
     return {
       val: true,
-      user: response.user
+      user: response.user,
     };
   } else {
     return {
-      val: false
+      val: false,
     };
   }
 }
 
-async function sendVerificationLink(){
-  initializeLoader()
-  let token = localStorage.getItem('token')
-  let status = await verifySessionStatus(token)
-  if (status.val){
-    let user = status.user
-    console.log(user)
-    user = JSON.stringify(user)
-    let response = await fetch(`${serverURL}/auth/verify-email`,{
-      method: 'POST',
+async function sendVerificationLink() {
+  initializeLoader();
+  let token = localStorage.getItem("token");
+  let status = await verifySessionStatus(token);
+  if (status.val) {
+    let user = status.user;
+    console.log(user);
+    user = JSON.stringify(user);
+    let response = await fetch(`${serverURL}/auth/verify-email`, {
+      method: "POST",
       body: user,
       headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    response = await response.json()
-    stopLoader()
-    console.log(response)
-    showAddBlog()
-    showPopup(response.message + ' (CHECK SPAM FOLDER)', (response.errcode?false:true))
-  }
-  else {
-    location.replace(`${siteURL}/login.html`)
+        "Content-Type": "application/json",
+      },
+    });
+    response = await response.json();
+    stopLoader();
+    console.log(response);
+    showAddBlog();
+    showPopup(
+      response.message + " (CHECK SPAM FOLDER)",
+      response.errcode ? false : true
+    );
+  } else {
+    location.replace(`${siteURL}/login.html`);
   }
 }
 
 async function getBlogs(token) {
   let blogs = await fetch(`${serverURL}/post/blogs`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer' + ' ' + token
-    }
-  })
-  blogs = await blogs.json()
-  blogs = blogs.blogs
-  return blogs
+      "Content-Type": "application/json",
+      Authorization: "Bearer" + " " + token,
+    },
+  });
+  blogs = await blogs.json();
+  blogs = blogs.blogs;
+  return blogs;
 }
 
 async function getUserBlogs(token, user) {
   let blogs = await fetch(`${serverURL}/post/blogs/${user.username}`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer' + ' ' + token
-    }
-  })
-  blogs = await blogs.json()
-  blogs = blogs.blogs
-  return blogs
+      "Content-Type": "application/json",
+      Authorization: "Bearer" + " " + token,
+    },
+  });
+  blogs = await blogs.json();
+  blogs = blogs.blogs;
+  return blogs;
 }
 
-async function likeToggle(userid, blogid, i){
-  let token = localStorage.getItem('token')
+async function likeToggle(userid, blogid, i) {
+  let token = localStorage.getItem("token");
   let body = {
     userid: userid,
-    blogid: blogid
-  }
-  body = JSON.stringify(body)
+    blogid: blogid,
+  };
+  body = JSON.stringify(body);
   let response = await fetch(`${serverURL}/post/blog/like`, {
-    method: 'POST',
+    method: "POST",
     body: body,
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer' + ' ' + token
-    }
-  })
-  response = await response.json()
-  if(response.message == "liked"){
-    console.log(response.message, blogid)
-    let likeButton = document.getElementsByClassName('like-icon')[i]
-    let likeCount = document.getElementsByClassName('likes-count')[i]
-    likeCount.innerText = parseInt(likeCount.innerText) + 1
-    likeButton.innerText = 'favorite'
-  }
-  else if(response.message == "undo liked"){
-    console.log(response.message, blogid)
-    let likeButton = document.getElementsByClassName('like-icon')[i]
-    let likeCount = document.getElementsByClassName('likes-count')[i]
-    likeCount.innerText = parseInt(likeCount.innerText) - 1
-    likeButton.innerText = 'favorite_border'
-  }
-  else{
+      "Content-Type": "application/json",
+      Authorization: "Bearer" + " " + token,
+    },
+  });
+  response = await response.json();
+  if (response.message == "liked") {
+    console.log(response.message, blogid);
+    let likeButton = document.getElementsByClassName("like-icon")[i];
+    let likeCount = document.getElementsByClassName("likes-count")[i];
+    likeCount.innerText = parseInt(likeCount.innerText) + 1;
+    likeButton.innerText = "favorite";
+  } else if (response.message == "undo liked") {
+    console.log(response.message, blogid);
+    let likeButton = document.getElementsByClassName("like-icon")[i];
+    let likeCount = document.getElementsByClassName("likes-count")[i];
+    likeCount.innerText = parseInt(likeCount.innerText) - 1;
+    likeButton.innerText = "favorite_border";
+  } else {
     //do nothing
-    console.log(response.message, blogid)
+    console.log(response.message, blogid);
   }
 }
 
-async function likedOrNot(userid, blogid){
-  let relationship = await fetch(`${serverURL}/post/blog/likedOrNot?userid=${userid}&blogid=${blogid}`)
-  relationship = await relationship.json()
-  console.log(relationship.message)
-  return relationship.message
+async function likedOrNot(userid, blogid) {
+  let relationship = await fetch(
+    `${serverURL}/post/blog/likedOrNot?userid=${userid}&blogid=${blogid}`
+  );
+  relationship = await relationship.json();
+  console.log(relationship.message);
+  return relationship.message;
 }
 
 async function renderBlogs(blogs, user) {
-  console.log(blogs)
-  let blogsContainer = document.querySelector('.blogs-container')
-  let blogCardHTML = ``
-  if(blogs.length != 0){
-    for(let i=0; i<blogs.length;i++){
-      blog = blogs[i]
-      let relationship = await likedOrNot(user.id, blog.blogid)
-      likeButton = relationship?'favorite':'favorite_border'
+  console.log(blogs);
+  let blogsContainer = document.querySelector(".blogs-container");
+  let blogCardHTML = ``;
+  if (blogs.length != 0) {
+    for (let i = 0; i < blogs.length; i++) {
+      blog = blogs[i];
+      let relationship = await likedOrNot(user.id, blog.blogid);
+      likeButton = relationship ? "favorite" : "favorite_border";
       blogCardHTML += `<div class="blog-card">
                         <div class="parent-container">
                         <div class="parent">
@@ -197,32 +232,32 @@ async function renderBlogs(blogs, user) {
                         <button class = "read-more" onclick="expandContent(${i})">READ MORE</button>
                         <button class = "read-less" onclick="hideContent(${i})">READ LESS</button>
                         <button class = "copy-blog-link" onclick="copyBlogLinkToClipboard(${blog.blogid})">SHARE LINK</button>
-                      </div>`
+                      </div>`;
     }
-  }
-  else{
-    blogCardHTML =`<div class="no-blog-container">
+  } else {
+    blogCardHTML = `<div class="no-blog-container">
                   <p><h2>No Blogs at the moment! why don't you write one?</h2></p>
                   <p> Click on the <span class="material-icons">add_box</span> icon, on the navigation bar to get started!</p>
-                  </div>`
+                  </div>`;
   }
-  blogsContainer.innerHTML = blogCardHTML
+  blogsContainer.innerHTML = blogCardHTML;
 }
 
-function renderProfile(user, userBlogs){
-  console.log(user)
-  let profileContainer = document.querySelector('.profile-container')
-  verification = (user.verified == 'true')?'VERIFIED':'VERIFY'
-  verificationFunction = (user.verified == 'true') ? '' : 'sendVerificationLink()'
-  profileData =` <h2>Profile</h2>
+function renderProfile(user, userBlogs) {
+  console.log(user);
+  let profileContainer = document.querySelector(".profile-container");
+  verification = user.verified == "true" ? "VERIFIED" : "VERIFY";
+  verificationFunction =
+    user.verified == "true" ? "" : "sendVerificationLink()";
+  profileData = ` <h2>Profile</h2>
                 <div class="add-blog">
                     <div><strong>USER-NAME</strong>: ${user.username}</div>
                     <div><strong>NAME</strong>: ${user.name}</div>
                     <div><strong>E-MAIL</strong>: ${user.email} <button class="verify-button" onclick=${verificationFunction}>${verification}</button></div>
-                </div>`
-  let blogCardHTML = ``
+                </div>`;
+  let blogCardHTML = ``;
   if (userBlogs.length != 0) {
-    userBlogs.forEach(blog => {
+    userBlogs.forEach((blog) => {
       blogCardHTML += `<div class="blog-card">
                         <div class="parent-container">
                         <div class="parent">
@@ -237,198 +272,197 @@ function renderProfile(user, userBlogs){
                         <div class="blog-content-profile">${blog.content}</div>
                         <button class="delete-blog-button" onclick="deleteUserBlog(${blog.blogid})">DELETE BLOG</button>
                         <button class = "copy-blog-link" onclick="copyBlogLinkToClipboard(${blog.blogid})">SHARE LINK</button>
-                      </div>`
+                      </div>`;
     });
-  }
-  else {
+  } else {
     blogCardHTML = `<div class="no-blog-container">
                   <p><h2>No Blogs at the moment! why don't you write one?</h2></p>
                   <p> Click on the <span class="material-icons">add_box</span> icon, on the navigation bar to get started!</p>
-                  </div>`
+                  </div>`;
   }
-  profileContainer.innerHTML = `<div class="blogs-container">` + profileData + blogCardHTML + `</div>`
-  let verifyButton = document.querySelector('.verify-button')
-  verifyButton.style.background = (user.verified == 'true') ? 'green' : 'red'
-
+  profileContainer.innerHTML =
+    `<div class="blogs-container">` + profileData + blogCardHTML + `</div>`;
+  let verifyButton = document.querySelector(".verify-button");
+  verifyButton.style.background = user.verified == "true" ? "green" : "red";
 }
 
-async function deleteUserBlog(blogid){
-  initializeLoader()
-  let token = localStorage.getItem('token')
-  let response = await fetch(`${serverURL}/post/blog/${blogid}`,{
-    method: 'DELETE',
+async function deleteUserBlog(blogid) {
+  initializeLoader();
+  let token = localStorage.getItem("token");
+  let response = await fetch(`${serverURL}/post/blog/${blogid}`, {
+    method: "DELETE",
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer' + ' ' + token
-    }
-  })
+      "Content-Type": "application/json",
+      Authorization: "Bearer" + " " + token,
+    },
+  });
   response = await response.json();
-  if (response.message == 'blog deleted successfully'){
-    location.replace(`${siteURL}/views/homepage/homepage.html`)
-  }
-  else{
-    stopLoader()
-    showAddBlog()
-    showPopup(response.message, false)
+  if (response.message == "blog deleted successfully") {
+    location.replace(`${siteURL}/views/homepage/homepage.html`);
+  } else {
+    stopLoader();
+    showAddBlog();
+    showPopup(response.message, false);
   }
 }
 
 function showHome() {
-  let home = document.querySelector('.home-container')
-  let homeButton = document.querySelector('.home-button')
-  let add = document.querySelector('.add-container')
-  let addButton = document.querySelector('.add-button')
-  let profile = document.querySelector('.profile-container')
-  let profileButton = document.querySelector('.profile-button')
+  let home = document.querySelector(".home-container");
+  let homeButton = document.querySelector(".home-button");
+  let add = document.querySelector(".add-container");
+  let addButton = document.querySelector(".add-button");
+  let profile = document.querySelector(".profile-container");
+  let profileButton = document.querySelector(".profile-button");
 
-  home.style.display = 'flex'
-  homeButton.style["border-bottom"] = '5px solid orange'
-  add.style.display = 'none'
-  addButton.style["border-bottom"] = 'none'
-  profile.style.display = 'none'
-  profileButton.style["border-bottom"] = 'none'
+  home.style.display = "flex";
+  homeButton.style["border-bottom"] = "5px solid orange";
+  add.style.display = "none";
+  addButton.style["border-bottom"] = "none";
+  profile.style.display = "none";
+  profileButton.style["border-bottom"] = "none";
 }
 
 function showAddBlog() {
-  let home = document.querySelector('.home-container')
-  let homeButton = document.querySelector('.home-button')
-  let add = document.querySelector('.add-container')
-  let addButton = document.querySelector('.add-button')
-  let profile = document.querySelector('.profile-container')
-  let profileButton = document.querySelector('.profile-button')
+  let home = document.querySelector(".home-container");
+  let homeButton = document.querySelector(".home-button");
+  let add = document.querySelector(".add-container");
+  let addButton = document.querySelector(".add-button");
+  let profile = document.querySelector(".profile-container");
+  let profileButton = document.querySelector(".profile-button");
 
-  home.style.display = 'none'
-  homeButton.style["border-bottom"] = 'none'
-  add.style.display = 'flex'
-  addButton.style["border-bottom"] = '5px solid orange'
-  profile.style.display = 'none'
-  profileButton.style["border-bottom"] = 'none'
+  home.style.display = "none";
+  homeButton.style["border-bottom"] = "none";
+  add.style.display = "flex";
+  addButton.style["border-bottom"] = "5px solid orange";
+  profile.style.display = "none";
+  profileButton.style["border-bottom"] = "none";
 }
 
 function showProfile() {
-  let home = document.querySelector('.home-container')
-  let homeButton = document.querySelector('.home-button')
-  let add = document.querySelector('.add-container')
-  let addButton = document.querySelector('.add-button')
-  let profile = document.querySelector('.profile-container')
-  let profileButton = document.querySelector('.profile-button')
+  let home = document.querySelector(".home-container");
+  let homeButton = document.querySelector(".home-button");
+  let add = document.querySelector(".add-container");
+  let addButton = document.querySelector(".add-button");
+  let profile = document.querySelector(".profile-container");
+  let profileButton = document.querySelector(".profile-button");
 
-  home.style.display = 'none'
-  homeButton.style["border-bottom"] = 'none'
-  add.style.display = 'none'
-  addButton.style["border-bottom"] = 'none'
-  profile.style.display = 'flex'
-  profileButton.style["border-bottom"] = '5px solid orange'
+  home.style.display = "none";
+  homeButton.style["border-bottom"] = "none";
+  add.style.display = "none";
+  addButton.style["border-bottom"] = "none";
+  profile.style.display = "flex";
+  profileButton.style["border-bottom"] = "5px solid orange";
 }
 
-function hideContent(i){
-  let content = document.getElementsByClassName('blog-content')[i]
-  let readmoreButton = document.getElementsByClassName('read-more')[i]
-  let readlessButton = document.getElementsByClassName('read-less')[i]
-  console.log(content, i)
-  readmoreButton.style.display = 'inline-block'
-  readlessButton.style.display = 'none'
-  content.style.display = 'none'
+function hideContent(i) {
+  let content = document.getElementsByClassName("blog-content")[i];
+  let readmoreButton = document.getElementsByClassName("read-more")[i];
+  let readlessButton = document.getElementsByClassName("read-less")[i];
+  console.log(content, i);
+  readmoreButton.style.display = "inline-block";
+  readlessButton.style.display = "none";
+  content.style.display = "none";
 }
-function expandContent(i){
-  let content = document.getElementsByClassName('blog-content')[i]
-  let readmoreButton = document.getElementsByClassName('read-more')[i]
-  let readlessButton = document.getElementsByClassName('read-less')[i]
-  console.log(content, i)
-  readmoreButton.style.display = 'none'
-  readlessButton.style.display = 'inline-block'
-  content.style.display = 'block'
+function expandContent(i) {
+  let content = document.getElementsByClassName("blog-content")[i];
+  let readmoreButton = document.getElementsByClassName("read-more")[i];
+  let readlessButton = document.getElementsByClassName("read-less")[i];
+  console.log(content, i);
+  readmoreButton.style.display = "none";
+  readlessButton.style.display = "inline-block";
+  content.style.display = "block";
 }
 
-
-function validate(blog){
-  if (!blog.tittle || !blog.content || !blog.description){
+function validate(blog) {
+  if (!blog.tittle || !blog.content || !blog.description) {
     return {
       val: false,
-      message: 'Enter the required fields!'
-    }
-  }
-  else{
+      message: "Enter the required fields!",
+    };
+  } else {
     return {
       val: true,
-    }
+    };
   }
 }
 
-function checkUserEmailVerified(user){
-  if (user.verified == 'false'){
-    return false
+function checkUserEmailVerified(user) {
+  if (user.verified == "false") {
+    return false;
   }
-  return true
+  return true;
 }
 
 async function submitBlog() {
-  initializeLoader()
-  let token = localStorage.getItem('token')
-  let tittle = document.querySelector('.tittle').value
-  let content = document.querySelector('.content').value
-  let description = document.querySelector('.description').value
-  let { user } = await verifySessionStatus(token)
+  initializeLoader();
+  let token = localStorage.getItem("token");
+  let tittle = document.querySelector(".tittle").value;
+  let content = document.querySelector(".content").value;
+  let description = document.querySelector(".description").value;
+  let { user } = await verifySessionStatus(token);
 
   if (!checkUserEmailVerified(user)) {
-    stopLoader()
-    return showPopup('Please verify you E-mail first. Click on profile icon ⬆️', false)
+    stopLoader();
+    return showPopup(
+      "Please verify you E-mail first. Click on profile icon ⬆️",
+      false
+    );
   }
 
   var today = new Date();
-  var dd = String(today.getDate()).padStart(2, '0');
-  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var dd = String(today.getDate()).padStart(2, "0");
+  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
   var yyyy = today.getFullYear();
-  today = mm + '/' + dd + '/' + yyyy
+  today = mm + "/" + dd + "/" + yyyy;
 
   let blog = {
     tittle: tittle,
     author: user.username,
     date: today,
     content: content,
-    description: description
-  }
+    description: description,
+  };
 
-  let success = validate(blog)
-  if(!success.val){
-    stopLoader()
-    return showPopup(success.message, success.val)
+  let success = validate(blog);
+  if (!success.val) {
+    stopLoader();
+    return showPopup(success.message, success.val);
   }
 
   let response = await fetch(`${serverURL}/post/blog`, {
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify(blog),
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer' + ' ' + token
-    }
-  })
+      "Content-Type": "application/json",
+      Authorization: "Bearer" + " " + token,
+    },
+  });
 
-  response = await response.json()
-  stopLoader()
-  if(response.message == 'internal server error'){
-    showPopup(response.message, false)
-  }
-  else{
-    showPopup(response.message + ' (PLEASE RELOAD)', true)
+  response = await response.json();
+  stopLoader();
+  if (response.message == "internal server error") {
+    showPopup(response.message, false);
+  } else {
+    showPopup(response.message + " (PLEASE RELOAD)", true);
   }
 }
 
-function copyBlogLinkToClipboard(blogid){
-  let currentPos = document.documentElement.scrollTop || document.body.scrollTop
+function copyBlogLinkToClipboard(blogid) {
+  let currentPos =
+    document.documentElement.scrollTop || document.body.scrollTop;
   let inputc = document.body.appendChild(document.createElement("input"));
   inputc.value = `${siteURL}/views/blog/blog.html?blogid=${blogid}`;
-  console.log(inputc.value)
+  console.log(inputc.value);
   inputc.focus();
   inputc.select();
-  document.execCommand('copy');
+  document.execCommand("copy");
   inputc.parentNode.removeChild(inputc);
   alert("Blog link Copied to clipboard.");
   window.scrollTo(0, currentPos);
 }
 
 async function logout() {
-  initializeLoader()
-  localStorage.removeItem('token')
-  location.replace(`${siteURL}/login.html`)
+  initializeLoader();
+  localStorage.removeItem("token");
+  location.replace(`${siteURL}/login.html`);
 }

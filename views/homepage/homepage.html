@@ -1,81 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-    <link rel="stylesheet" href="homepage.css">
-    <link rel="stylesheet" href="notification.css">
-    <link rel="stylesheet" href="loading-screen.css">
-    <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
-    <link rel="manifest" href="../../favicon/site.webmanifest">
-</head>
-<body>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="homepage.css" />
+    <link rel="stylesheet" href="notification.css" />
+    <link rel="stylesheet" href="loading-screen.css" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="../../favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="../../favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="../../favicon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="../../favicon/site.webmanifest" />
+  </head>
+  <body>
     <div class="loading-screen">
-        <div class="loading-screen-image"><img src="../../assets/images/logo.png" alt=""></div>
-        <div class="loader-animation">
-            <div class="loader-one"></div>
-            <div class="loader-two"></div>
-            <div class="loader-three"></div>
-        </div>
+      <div class="loading-screen-image">
+        <img src="../../assets/images/logo.png" alt="" />
+      </div>
+      <div class="loader-animation">
+        <div class="loader-one"></div>
+        <div class="loader-two"></div>
+        <div class="loader-three"></div>
+      </div>
     </div>
     <nav>
-        <img src="../../assets/images/logo.png" alt="blogg">
-        <div class="buttons-container">
-            <button onclick="showHome()" class="home-button"><span class="material-icons md-36 orange600">home</span></button>
-            <button onclick="showAddBlog()" class="add-button"><span class="material-icons-outlined md-36 orange600">add_box</span></button>
-            <button onclick="showProfile()" class="profile-button"><span class="material-icons md-36 orange600">face</span></button>
-        </div>
-        <button onclick="logout()" class="logout-button"><span class="material-icons md-36 orange600">logout</span></button>
+      <img src="../../assets/images/logo.png" alt="blogg" />
+      <div class="buttons-container">
+        <button onclick="showHome()" class="home-button">
+          <span class="material-icons md-36 orange600">home</span>
+        </button>
+        <button onclick="showAddBlog()" class="add-button">
+          <span class="material-icons-outlined md-36 orange600">add_box</span>
+        </button>
+        <button onclick="showProfile()" class="profile-button">
+          <span class="material-icons md-36 orange600">face</span>
+        </button>
+      </div>
+      <button onclick="logout()" class="logout-button">
+        <span class="material-icons md-36 orange600">logout</span>
+      </button>
     </nav>
 
     <!-- BLOGS DISPLAY SECTION (HOME) -->
 
     <div class="home-container">
-        <h2>blogg</h2>
-        <div class="blogs-container">
-
-        </div>
+      <div style="display: flex; align-items: center; margin: 1rem">
+        <h2 style="margin: 0.25rem">blogg</h2>
+        <span
+          id="mode-toggle"
+          class="material-icons-outlined md-24"
+          style="margin: 0.25rem; cursor: pointer"
+          onclick="toggleLightMode()"
+          >light_mode</span
+        >
+      </div>
+      <div class="blogs-container"></div>
     </div>
 
     <!-- ADD BLOG SECTION -->
 
     <div class="add-container">
-        <h2>Add blogg</h2>
-        <div class="blogs-container">
-            <div class="add-blog">
-                <div id="notification">
-                    <span id="notification-text"></span>
-                    <span class="material-icons close-button" onclick="closePopup()">close</span>
-                </div>
-                <input class="tittle" type="tittle" placeholder="Tittle" required>
-                <textarea class="description" name="description" id="" cols="30" rows="5" placeholder="Write a Short Description"></textarea>
-                <textarea class="content" name="content" id="" cols="30" rows="10" placeholder="Write Your Blog in Markdown"></textarea>
-                <button class="submit-button" onclick="submitBlog()">ADD</button>
-                <br><br>
-                <div style="margin: 0px 10px;">
-                    <div><strong>IMPORTANT:</strong></div>
-                    <div>
-                        1. Before you post a blog, make sure you read the <a style="text-decoration: none;" href="../guidelines/community-guidelines.html">guidelines</a>.
-                        <br>
-                        2. If you don't know how to write a blog in markdown, use this <a style="text-decoration: none;" href="https://ghost.org/changelog/markdown/">guide</a>.
-                    </div>
-                </div>
+      <h2>Add blogg</h2>
+      <div class="blogs-container">
+        <div class="add-blog">
+          <div id="notification">
+            <span id="notification-text"></span>
+            <span class="material-icons close-button" onclick="closePopup()"
+              >close</span
+            >
+          </div>
+          <input class="tittle" type="tittle" placeholder="Tittle" required />
+          <textarea
+            class="description"
+            name="description"
+            id=""
+            cols="30"
+            rows="5"
+            placeholder="Write a Short Description"
+          ></textarea>
+          <textarea
+            class="content"
+            name="content"
+            id=""
+            cols="30"
+            rows="10"
+            placeholder="Write Your Blog in Markdown"
+          ></textarea>
+          <button class="submit-button" onclick="submitBlog()">ADD</button>
+          <br /><br />
+          <div style="margin: 0px 10px">
+            <div><strong>IMPORTANT:</strong></div>
+            <div>
+              1. Before you post a blog, make sure you read the
+              <a
+                id="guidelines-a"
+                style="text-decoration: none"
+                href="../guidelines/community-guidelines.html"
+                >guidelines</a
+              >.
+              <br />
+              2. If you don't know how to write a blog in markdown, use this
+              <a
+                id="markdown-guide-a"
+                style="text-decoration: none"
+                href="https://ghost.org/changelog/markdown/"
+                >guide</a
+              >.
             </div>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- PROFILE DISPLAY SECTION -->
 
-    <div class="profile-container">
-
-    </div>
+    <div class="profile-container"></div>
 
     <script src="homepage.js"></script>
-</body>
+  </body>
 </html>
