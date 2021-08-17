@@ -1,6 +1,6 @@
 const serverURL = "https://blogg-server.herokuapp.com";
-const siteURL = "https://letsblogg.netlify.app";
-// const serverURL = 'http://localhost:5000'
+const siteURL = "https://tomperblogg.netlify.app";
+// const serverURL = "http://localhost:5000";
 // const siteURL = "http://localhost:5500";
 
 let notification = document.getElementById("notification");
@@ -195,28 +195,29 @@ async function likeToggle(userid, blogid, i) {
     likeButton.innerText = "favorite_border";
   } else {
     //do nothing
-    console.log(response.message, blogid);
   }
 }
 
-async function likedOrNot(userid, blogid) {
+async function likedOrNot(userid) {
   let relationship = await fetch(
-    `${serverURL}/post/blog/likedOrNot?userid=${userid}&blogid=${blogid}`
+    `${serverURL}/post/blog/likedOrNot?userid=${userid}`
   );
   relationship = await relationship.json();
-  console.log(relationship.message);
-  return relationship.message;
+  return relationship.relations;
 }
 
 async function renderBlogs(blogs, user) {
-  console.log(blogs);
+  let relationship = await likedOrNot(user.id);
   let blogsContainer = document.querySelector(".blogs-container");
   let blogCardHTML = ``;
   if (blogs.length != 0) {
     for (let i = 0; i < blogs.length; i++) {
       blog = blogs[i];
-      let relationship = await likedOrNot(user.id, blog.blogid);
-      likeButton = relationship ? "favorite" : "favorite_border";
+      likeButton = relationship.some(
+        (thisBlog) => thisBlog.blogid === blog.blogid
+      )
+        ? "favorite"
+        : "favorite_border";
       blogCardHTML += `<div class="blog-card">
                         <div class="parent-container">
                         <div class="parent">
