@@ -398,7 +398,8 @@ async function submitBlog() {
   initializeLoader();
   let token = localStorage.getItem("token");
   let tittle = document.querySelector(".tittle").value;
-  let content = document.querySelector(".content").value;
+  // let content = document.querySelector(".content").value;
+  let content = tinymce.get("tinymce").getContent();
   let description = document.querySelector(".description").value;
   let { user } = await verifySessionStatus(token);
 
