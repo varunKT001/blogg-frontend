@@ -1,16 +1,16 @@
-const serverURL = "https://blogg-server.herokuapp.com";
-const siteURL = "https://tomperblogg.netlify.app";
+const serverURL = 'https://blogg-server.herokuapp.com';
+const siteURL = 'https://tomperblogg.netlify.app';
 // const serverURL = "http://localhost:5000";
 // const siteURL = "http://localhost:5500";
 
-let notification = document.getElementById("notification");
-let notificationText = document.getElementById("notification-text");
+let notification = document.getElementById('notification');
+let notificationText = document.getElementById('notification-text');
 
-window.addEventListener("load", async () => {
+window.addEventListener('load', async () => {
   // CHECK AUTH
   initializeLoader();
-  if (localStorage.getItem("token")) {
-    const token = localStorage.getItem("token");
+  if (localStorage.getItem('token')) {
+    const token = localStorage.getItem('token');
     let status = await verifySessionStatus(token);
     if (status.val) {
       // GET BLOGS
@@ -20,86 +20,86 @@ window.addEventListener("load", async () => {
       renderProfile(status.user, userBlogs);
       stopLoader();
     } else {
-      localStorage.removeItem("token");
+      localStorage.removeItem('token');
       location.replace(`${siteURL}/login.html`);
     }
   } else {
-    localStorage.removeItem("token");
+    localStorage.removeItem('token');
     location.replace(`${siteURL}/login.html`);
   }
 });
 
 function initializeLoader() {
-  document.querySelector(".loading-screen").style.display = "flex";
+  document.querySelector('.loading-screen').style.display = 'flex';
 }
 
 function stopLoader() {
-  document.querySelector(".loading-screen").style.display = "none";
+  document.querySelector('.loading-screen').style.display = 'none';
 }
 
 function showPopup(message, success) {
   if (success) {
-    notification.style.border = "2px solid green";
-    notification.style.background = "rgba(0, 255, 0, 0.05)";
+    notification.style.border = '2px solid green';
+    notification.style.background = 'rgba(0, 255, 0, 0.05)';
   } else {
-    notification.style.border = "2px solid red";
-    notification.style.background = "rgba(255, 0, 0, 0.05)";
+    notification.style.border = '2px solid red';
+    notification.style.background = 'rgba(255, 0, 0, 0.05)';
   }
 
   notificationText.innerText = message;
-  notification.style.display = "flex";
+  notification.style.display = 'flex';
 }
 
 function closePopup() {
-  notificationText.innerText = "";
-  notification.style.display = "none";
+  notificationText.innerText = '';
+  notification.style.display = 'none';
 }
 
 function toggleLightMode() {
-  mode = document.getElementById("mode-toggle");
-  if (mode.innerText == "light_mode") {
-    let body = document.querySelector("body");
-    let tittle = document.querySelector(".tittle");
-    let description = document.querySelector(".description");
-    let content = document.querySelector(".content");
-    let guidelines = document.getElementById("guidelines-a");
-    let guide = document.getElementById("markdown-guide-a");
-    guidelines.style.color = "orange";
-    guide.style.color = "orange";
-    tittle.style.color = "white";
-    description.style.color = "white";
-    content.style.color = "white";
-    body.style.background = "rgb(30,30,30)";
-    body.style.color = "white";
-    mode.innerText = "dark_mode";
-  } else if (mode.innerText == "dark_mode") {
-    let body = document.querySelector("body");
-    let tittle = document.querySelector(".tittle");
-    let description = document.querySelector(".description");
-    let content = document.querySelector(".content");
-    let guidelines = document.getElementById("guidelines-a");
-    let guide = document.getElementById("markdown-guide-a");
-    guidelines.style.color = "blue";
-    guide.style.color = "blue";
-    tittle.style.color = "black";
-    description.style.color = "black";
-    content.style.color = "black";
-    body.style.background = "rgba(255, 165, 0, 0.4)";
-    body.style.color = "black";
-    mode.innerText = "light_mode";
+  mode = document.getElementById('mode-toggle');
+  if (mode.innerText == 'light_mode') {
+    let body = document.querySelector('body');
+    let tittle = document.querySelector('.tittle');
+    let description = document.querySelector('.description');
+    let content = document.querySelector('.content');
+    let guidelines = document.getElementById('guidelines-a');
+    let guide = document.getElementById('markdown-guide-a');
+    guidelines.style.color = 'orange';
+    guide.style.color = 'orange';
+    tittle.style.color = 'white';
+    description.style.color = 'white';
+    content.style.color = 'white';
+    body.style.background = 'rgb(30,30,30)';
+    body.style.color = 'white';
+    mode.innerText = 'dark_mode';
+  } else if (mode.innerText == 'dark_mode') {
+    let body = document.querySelector('body');
+    let tittle = document.querySelector('.tittle');
+    let description = document.querySelector('.description');
+    let content = document.querySelector('.content');
+    let guidelines = document.getElementById('guidelines-a');
+    let guide = document.getElementById('markdown-guide-a');
+    guidelines.style.color = 'blue';
+    guide.style.color = 'blue';
+    tittle.style.color = 'black';
+    description.style.color = 'black';
+    content.style.color = 'black';
+    body.style.background = 'rgba(255, 165, 0, 0.2)';
+    body.style.color = 'black';
+    mode.innerText = 'light_mode';
   }
 }
 
 async function verifySessionStatus(token) {
   let response = await fetch(`${serverURL}/auth/verifyToken`, {
-    method: "GET",
+    method: 'GET',
     headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer" + " " + token,
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer' + ' ' + token,
     },
   });
   response = await response.json();
-  if (response.message == "verified") {
+  if (response.message == 'verified') {
     return {
       val: true,
       user: response.user,
@@ -113,17 +113,17 @@ async function verifySessionStatus(token) {
 
 async function sendVerificationLink() {
   initializeLoader();
-  let token = localStorage.getItem("token");
+  let token = localStorage.getItem('token');
   let status = await verifySessionStatus(token);
   if (status.val) {
     let user = status.user;
     console.log(user);
     user = JSON.stringify(user);
     let response = await fetch(`${serverURL}/auth/verify-email`, {
-      method: "POST",
+      method: 'POST',
       body: user,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     });
     response = await response.json();
@@ -131,7 +131,7 @@ async function sendVerificationLink() {
     console.log(response);
     showAddBlog();
     showPopup(
-      response.message + " (CHECK SPAM FOLDER)",
+      response.message + ' (CHECK SPAM FOLDER)',
       response.errcode ? false : true
     );
   } else {
@@ -141,10 +141,10 @@ async function sendVerificationLink() {
 
 async function getBlogs(token) {
   let blogs = await fetch(`${serverURL}/post/blogs`, {
-    method: "GET",
+    method: 'GET',
     headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer" + " " + token,
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer' + ' ' + token,
     },
   });
   blogs = await blogs.json();
@@ -154,10 +154,10 @@ async function getBlogs(token) {
 
 async function getUserBlogs(token, user) {
   let blogs = await fetch(`${serverURL}/post/blogs/${user.username}`, {
-    method: "GET",
+    method: 'GET',
     headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer" + " " + token,
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer' + ' ' + token,
     },
   });
   blogs = await blogs.json();
@@ -166,33 +166,33 @@ async function getUserBlogs(token, user) {
 }
 
 async function likeToggle(userid, blogid, i) {
-  let token = localStorage.getItem("token");
+  let token = localStorage.getItem('token');
   let body = {
     userid: userid,
     blogid: blogid,
   };
   body = JSON.stringify(body);
   let response = await fetch(`${serverURL}/post/blog/like`, {
-    method: "POST",
+    method: 'POST',
     body: body,
     headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer" + " " + token,
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer' + ' ' + token,
     },
   });
   response = await response.json();
-  if (response.message == "liked") {
+  if (response.message == 'liked') {
     console.log(response.message, blogid);
-    let likeButton = document.getElementsByClassName("like-icon")[i];
-    let likeCount = document.getElementsByClassName("likes-count")[i];
+    let likeButton = document.getElementsByClassName('like-icon')[i];
+    let likeCount = document.getElementsByClassName('likes-count')[i];
     likeCount.innerText = parseInt(likeCount.innerText) + 1;
-    likeButton.innerText = "favorite";
-  } else if (response.message == "undo liked") {
+    likeButton.innerText = 'favorite';
+  } else if (response.message == 'undo liked') {
     console.log(response.message, blogid);
-    let likeButton = document.getElementsByClassName("like-icon")[i];
-    let likeCount = document.getElementsByClassName("likes-count")[i];
+    let likeButton = document.getElementsByClassName('like-icon')[i];
+    let likeCount = document.getElementsByClassName('likes-count')[i];
     likeCount.innerText = parseInt(likeCount.innerText) - 1;
-    likeButton.innerText = "favorite_border";
+    likeButton.innerText = 'favorite_border';
   } else {
     //do nothing
   }
@@ -208,7 +208,7 @@ async function likedOrNot(userid) {
 
 async function renderBlogs(blogs, user) {
   let relationship = await likedOrNot(user.id);
-  let blogsContainer = document.querySelector(".blogs-container");
+  let blogsContainer = document.querySelector('.blogs-container');
   let blogCardHTML = ``;
   if (blogs.length != 0) {
     for (let i = 0; i < blogs.length; i++) {
@@ -216,8 +216,8 @@ async function renderBlogs(blogs, user) {
       likeButton = relationship.some(
         (thisBlog) => thisBlog.blogid === blog.blogid
       )
-        ? "favorite"
-        : "favorite_border";
+        ? 'favorite'
+        : 'favorite_border';
       blogCardHTML += `<div class="blog-card">
                         <div class="parent-container">
                         <div class="parent">
@@ -246,10 +246,10 @@ async function renderBlogs(blogs, user) {
 
 function renderProfile(user, userBlogs) {
   console.log(user);
-  let profileContainer = document.querySelector(".profile-container");
-  verification = user.verified == "true" ? "VERIFIED" : "VERIFY";
+  let profileContainer = document.querySelector('.profile-container');
+  verification = user.verified == 'true' ? 'VERIFIED' : 'VERIFY';
   verificationFunction =
-    user.verified == "true" ? "" : "sendVerificationLink()";
+    user.verified == 'true' ? '' : 'sendVerificationLink()';
   profileData = ` <h2>Profile</h2>
                 <div class="add-blog">
                     <div><strong>USER-NAME</strong>: ${user.username}</div>
@@ -283,22 +283,22 @@ function renderProfile(user, userBlogs) {
   }
   profileContainer.innerHTML =
     `<div class="blogs-container">` + profileData + blogCardHTML + `</div>`;
-  let verifyButton = document.querySelector(".verify-button");
-  verifyButton.style.background = user.verified == "true" ? "green" : "red";
+  let verifyButton = document.querySelector('.verify-button');
+  verifyButton.style.background = user.verified == 'true' ? 'green' : 'red';
 }
 
 async function deleteUserBlog(blogid) {
   initializeLoader();
-  let token = localStorage.getItem("token");
+  let token = localStorage.getItem('token');
   let response = await fetch(`${serverURL}/post/blog/${blogid}`, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer" + " " + token,
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer' + ' ' + token,
     },
   });
   response = await response.json();
-  if (response.message == "blog deleted successfully") {
+  if (response.message == 'blog deleted successfully') {
     location.replace(`${siteURL}/views/homepage/homepage.html`);
   } else {
     stopLoader();
@@ -308,77 +308,77 @@ async function deleteUserBlog(blogid) {
 }
 
 function showHome() {
-  let home = document.querySelector(".home-container");
-  let homeButton = document.querySelector(".home-button");
-  let add = document.querySelector(".add-container");
-  let addButton = document.querySelector(".add-button");
-  let profile = document.querySelector(".profile-container");
-  let profileButton = document.querySelector(".profile-button");
+  let home = document.querySelector('.home-container');
+  let homeButton = document.querySelector('.home-button');
+  let add = document.querySelector('.add-container');
+  let addButton = document.querySelector('.add-button');
+  let profile = document.querySelector('.profile-container');
+  let profileButton = document.querySelector('.profile-button');
 
-  home.style.display = "flex";
-  homeButton.style["border-bottom"] = "5px solid orange";
-  add.style.display = "none";
-  addButton.style["border-bottom"] = "none";
-  profile.style.display = "none";
-  profileButton.style["border-bottom"] = "none";
+  home.style.display = 'flex';
+  homeButton.style['border-bottom'] = '5px solid orange';
+  add.style.display = 'none';
+  addButton.style['border-bottom'] = 'none';
+  profile.style.display = 'none';
+  profileButton.style['border-bottom'] = 'none';
 }
 
 function showAddBlog() {
-  let home = document.querySelector(".home-container");
-  let homeButton = document.querySelector(".home-button");
-  let add = document.querySelector(".add-container");
-  let addButton = document.querySelector(".add-button");
-  let profile = document.querySelector(".profile-container");
-  let profileButton = document.querySelector(".profile-button");
+  let home = document.querySelector('.home-container');
+  let homeButton = document.querySelector('.home-button');
+  let add = document.querySelector('.add-container');
+  let addButton = document.querySelector('.add-button');
+  let profile = document.querySelector('.profile-container');
+  let profileButton = document.querySelector('.profile-button');
 
-  home.style.display = "none";
-  homeButton.style["border-bottom"] = "none";
-  add.style.display = "flex";
-  addButton.style["border-bottom"] = "5px solid orange";
-  profile.style.display = "none";
-  profileButton.style["border-bottom"] = "none";
+  home.style.display = 'none';
+  homeButton.style['border-bottom'] = 'none';
+  add.style.display = 'flex';
+  addButton.style['border-bottom'] = '5px solid orange';
+  profile.style.display = 'none';
+  profileButton.style['border-bottom'] = 'none';
 }
 
 function showProfile() {
-  let home = document.querySelector(".home-container");
-  let homeButton = document.querySelector(".home-button");
-  let add = document.querySelector(".add-container");
-  let addButton = document.querySelector(".add-button");
-  let profile = document.querySelector(".profile-container");
-  let profileButton = document.querySelector(".profile-button");
+  let home = document.querySelector('.home-container');
+  let homeButton = document.querySelector('.home-button');
+  let add = document.querySelector('.add-container');
+  let addButton = document.querySelector('.add-button');
+  let profile = document.querySelector('.profile-container');
+  let profileButton = document.querySelector('.profile-button');
 
-  home.style.display = "none";
-  homeButton.style["border-bottom"] = "none";
-  add.style.display = "none";
-  addButton.style["border-bottom"] = "none";
-  profile.style.display = "flex";
-  profileButton.style["border-bottom"] = "5px solid orange";
+  home.style.display = 'none';
+  homeButton.style['border-bottom'] = 'none';
+  add.style.display = 'none';
+  addButton.style['border-bottom'] = 'none';
+  profile.style.display = 'flex';
+  profileButton.style['border-bottom'] = '5px solid orange';
 }
 
 function hideContent(i) {
-  let content = document.getElementsByClassName("blog-content")[i];
-  let readmoreButton = document.getElementsByClassName("read-more")[i];
-  let readlessButton = document.getElementsByClassName("read-less")[i];
+  let content = document.getElementsByClassName('blog-content')[i];
+  let readmoreButton = document.getElementsByClassName('read-more')[i];
+  let readlessButton = document.getElementsByClassName('read-less')[i];
   console.log(content, i);
-  readmoreButton.style.display = "inline-block";
-  readlessButton.style.display = "none";
-  content.style.display = "none";
+  readmoreButton.style.display = 'inline-block';
+  readlessButton.style.display = 'none';
+  content.style.display = 'none';
 }
 function expandContent(i) {
-  let content = document.getElementsByClassName("blog-content")[i];
-  let readmoreButton = document.getElementsByClassName("read-more")[i];
-  let readlessButton = document.getElementsByClassName("read-less")[i];
+  let content = document.getElementsByClassName('blog-content')[i];
+  let readmoreButton = document.getElementsByClassName('read-more')[i];
+  let readlessButton = document.getElementsByClassName('read-less')[i];
   console.log(content, i);
-  readmoreButton.style.display = "none";
-  readlessButton.style.display = "inline-block";
-  content.style.display = "block";
+  readmoreButton.style.display = 'none';
+  readlessButton.style.display = 'inline-block';
+  content.style.display = 'block';
 }
 
 function validate(blog) {
   if (!blog.tittle || !blog.content || !blog.description) {
     return {
       val: false,
-      message: "Enter the required fields!",
+      message: 'Enter the required fields!',
     };
   } else {
     return {
@@ -388,7 +388,7 @@ function validate(blog) {
 }
 
 function checkUserEmailVerified(user) {
-  if (user.verified == "false") {
+  if (user.verified == 'false') {
     return false;
   }
   return true;
@@ -396,26 +396,26 @@ function checkUserEmailVerified(user) {
 
 async function submitBlog() {
   initializeLoader();
-  let token = localStorage.getItem("token");
-  let tittle = document.querySelector(".tittle").value;
+  let token = localStorage.getItem('token');
+  let tittle = document.querySelector('.tittle').value;
   // let content = document.querySelector(".content").value;
-  let content = tinymce.get("tinymce").getContent();
-  let description = document.querySelector(".description").value;
+  let content = tinymce.get('tinymce').getContent();
+  let description = document.querySelector('.description').value;
   let { user } = await verifySessionStatus(token);
 
   if (!checkUserEmailVerified(user)) {
     stopLoader();
     return showPopup(
-      "Please verify you E-mail first. Click on profile icon ⬆️",
+      'Please verify you E-mail first. Click on profile icon ⬆️',
       false
     );
   }
 
   var today = new Date();
-  var dd = String(today.getDate()).padStart(2, "0");
-  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
   var yyyy = today.getFullYear();
-  today = mm + "/" + dd + "/" + yyyy;
+  today = mm + '/' + dd + '/' + yyyy;
 
   let blog = {
     tittle: tittle,
@@ -432,39 +432,39 @@ async function submitBlog() {
   }
 
   let response = await fetch(`${serverURL}/post/blog`, {
-    method: "POST",
+    method: 'POST',
     body: JSON.stringify(blog),
     headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer" + " " + token,
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer' + ' ' + token,
     },
   });
 
   response = await response.json();
   stopLoader();
-  if (response.message == "internal server error") {
+  if (response.message == 'internal server error') {
     showPopup(response.message, false);
   } else {
-    showPopup(response.message + " (PLEASE RELOAD)", true);
+    showPopup(response.message + ' (PLEASE RELOAD)', true);
   }
 }
 
 function copyBlogLinkToClipboard(blogid) {
   let currentPos =
     document.documentElement.scrollTop || document.body.scrollTop;
-  let inputc = document.body.appendChild(document.createElement("input"));
+  let inputc = document.body.appendChild(document.createElement('input'));
   inputc.value = `${siteURL}/views/blog/blog.html?blogid=${blogid}`;
   console.log(inputc.value);
   inputc.focus();
   inputc.select();
-  document.execCommand("copy");
+  document.execCommand('copy');
   inputc.parentNode.removeChild(inputc);
-  alert("Blog link Copied to clipboard.");
+  alert('Blog link Copied to clipboard.');
   window.scrollTo(0, currentPos);
 }
 
 async function logout() {
   initializeLoader();
-  localStorage.removeItem("token");
+  localStorage.removeItem('token');
   location.replace(`${siteURL}/login.html`);
 }
